@@ -54,7 +54,7 @@ In your favorite browser or using postman you can hit those endpoints with the f
   * **GET** on **base-url + uri** to retrieve the collection
   * **GET** **base-url + uri + /:id** to retrieve the specific object
   * **DELETE** **base-url + uri + /:id** to delete the specific object
-* ***URI:*** <code>/containers</code>
+* ***URI:*** <code>/containers/</code>
   * **POST** on **base-url + uri** with this body:
   ```json
   {
@@ -62,7 +62,7 @@ In your favorite browser or using postman you can hit those endpoints with the f
       "volume": 1
   }
   ```
-* ***URI:*** <code>/phasers</code>
+* ***URI:*** <code>/phasers/</code>
   * **POST** on **base-url + uri** with this body:
   ```json
   {
@@ -70,7 +70,7 @@ In your favorite browser or using postman you can hit those endpoints with the f
       "volume": 1
   }
   ```
-* ***URI:*** <code>/blasters</code>
+* ***URI:*** <code>/blasters/</code>
   * **POST** on **base-url + uri** with this body:
   ```json
   {
@@ -79,7 +79,7 @@ In your favorite browser or using postman you can hit those endpoints with the f
       "gaz_level": 12
   }
   ```
-* ***URI:*** <code>/transportships</code>
+* ***URI:*** <code>/transportships/</code>
   * **POST** on **base-url + uri** with this body:
   ```json
   {
@@ -101,7 +101,7 @@ In your favorite browser or using postman you can hit those endpoints with the f
       "equipments":[new_id_equipment_to_load, old_id_of_equipment_to_load_, ...]
   }
   ```
-* ***URI:*** <code>/hybridships</code>
+* ***URI:*** <code>/hybridships/</code>
   * **POST** on **base-url + uri** with this body:
   ```json
   {
@@ -126,7 +126,7 @@ In your favorite browser or using postman you can hit those endpoints with the f
   }
   ```
 
-* ***URI:*** <code>/heavywarships</code>
+* ***URI:*** <code>/heavywarships/</code>
   * **POST** on **base-url + uri** with this body:
   ```json
   {
@@ -146,7 +146,7 @@ In your favorite browser or using postman you can hit those endpoints with the f
       "equipments":[new_id_of_weapon_to_equip_1, old_id_of_weapon_to_equip_2, ...]
   }
   ```
-* ***URI:*** <code>/lightwarships</code>
+* ***URI:*** <code>/lightwarships/</code>
   * **POST** on **base-url + uri** with this body:
   ```json
   {
