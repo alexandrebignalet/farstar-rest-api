@@ -74,4 +74,42 @@ class EquipmentRepository
 		var equipment = find(id, "Equipment")
 		equipments.remove_at equipments.index_of(equipment)
 	end
+
+	fun add_fixtures_data
+	do
+		var phaser = new Phaser(1,1)
+		add(phaser)
+		var phas = new Phaser(2,2)
+		add(phas)
+		add(new Phaser(2,2))
+
+		var blas = new Blaster(1,1,15)
+		add(blas)
+		var blaster = new Blaster(2,2,100)
+		add(blaster)
+		add(new Blaster(2,2,100))
+		add(new Blaster(1,2,0))
+
+		var container = new Container(10, 10)
+		add(container)
+		var cont = new Container(10, 10)
+		add(cont)
+		add(new Container(100, 10))
+
+		var ts = new TransportShip(100, 100, 200, 90)
+		ts.load(phaser)
+		ts.load(container)
+		add(ts)
+
+		var warship = new HeavyWarShip(10, 10, 2)
+		warship.load(phas)
+		warship.load(blas)
+		add(warship)
+
+		var hybridship = new HybridShip(200, 200, 250, 190, 5)
+		hybridship.load(cont)
+		hybridship.load(ts)
+		hybridship.load(blaster)
+		add(hybridship)
+	end
 end

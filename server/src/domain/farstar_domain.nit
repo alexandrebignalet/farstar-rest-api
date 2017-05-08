@@ -400,9 +400,9 @@ class Blaster
 	super Weapon
 
 	var gaz_level: Int
-	private var max_gaz_level = 100
+	private var max_gaz_level = 100 is noserialize
 
-	init do assert gaz_level > 0
+	init do assert gaz_level >= 0
 
 	fun reload do self.gaz_level = max_gaz_level
 end

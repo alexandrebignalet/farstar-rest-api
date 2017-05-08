@@ -15,6 +15,7 @@ fun iface: String do return "0.0.0.0:8080"
 var vh = new VirtualHost(iface)
 #repository in order to emulate a database storage
 var equipment_repository = new EquipmentRepository
+equipment_repository.add_fixtures_data
 
 var ship_converter = new ShipConverter(equipment_repository)
 var weapon_converter = new WeaponConverter
