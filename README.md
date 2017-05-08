@@ -1,7 +1,7 @@
 FAR*STAR REST API
 ==
 
-<p> Demo de creation d'une API REST avec le langage Nit </p>
+<p> Demo of REST API using Nit language</p>
 
 ## Prerequisite
 * **Docker & docker-compose** OU **nitc** (compilateur de Nit)
@@ -53,6 +53,7 @@ In your favorite browser or using postman you can hit those endpoints with the f
 * ***for all Resources***
   * **GET** on **base-url + uri** to retrieve the collection
   * **GET** **base-url + uri + /:id** to retrieve the specific object
+  * **DELETE** **base-url + uri + /:id** to delete the specific object
 * ***URI:*** <code>/containers</code>
   * **POST** on **base-url + uri** with this body:
   ```json
