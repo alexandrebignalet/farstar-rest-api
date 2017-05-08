@@ -72,6 +72,12 @@ class EquipmentRepository
 	fun remove(id: Int)
 	do
 		var equipment = find(id, "Equipment")
+		if equipment isa Ship then
+			var loading = equipment.equipments.clone
+			for item in loading do
+				equipment.unload(item)
+			end
+		end
 		equipments.remove_at equipments.index_of(equipment)
 	end
 
