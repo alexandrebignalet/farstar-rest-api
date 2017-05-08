@@ -1,0 +1,8 @@
+nit-rest-api:
+   restart: always
+   build: nit-serv
+   ports:
+      - "8000:8080"
+   volumes:
+      - ./server:/nit/contrib/far_star_rest_api/server
+   stdin_open: true

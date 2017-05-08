@@ -1,0 +1,4 @@
+server/farstar_server_rest_api
+nitunit.xml
+server/test/acceptance/results/
+../../tests/
