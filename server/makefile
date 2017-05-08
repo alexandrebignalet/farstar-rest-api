@@ -13,6 +13,9 @@ compile:
 build: compile
 	./$(EXEC)
 
+tests:
+	nitunit ./
+	
 # to run on the host machine ...
 acceptance_tests:
 	docker run -it --rm -v $(PWD)/test/acceptance/user-files/simulations/:/opt/gatling/user-files/simulations/ \

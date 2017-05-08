@@ -6,5 +6,3 @@ RUN apt-get update && apt-get install inotify-tools gettext libevent-dev \
 WORKDIR /nit/contrib/far_star_rest_api/server
 
 EXPOSE 8080
-
-# ENTRYPOINT ["make"]
