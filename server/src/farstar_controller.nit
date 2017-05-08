@@ -17,18 +17,13 @@
 # Actions for the Web interface of Benitlux
 module farstar_controller
 
-import http_service
-import nitcorn
 import nitcorn::restful
-
-private import json
+import data_binder
+import http_service
 
 import farstar_domain
-
-
 import farstar_repository
-import validator
-import data_binder
+import farstar_validation
 import farstar_dto
 import farstar_converter
 
@@ -95,9 +90,11 @@ class EquipmentRestController
 	super RestfulAction
 
 	private var repository: EquipmentRepository
-	private var validator: Validator
-	private var converter: EquipmentConverter
+	private var validator: Validator is noinit
+	private var converter: EquipmentConverter is noinit
 	private var static_type = "Equipment"
+
+	init do validator = new EquipmentValidator
 
 	fun get(id: Int): HttpResponse
 	do
@@ -136,6 +133,7 @@ class EquipmentRestController
 
 	redef fun answer(request, turi)
 	do
+		print turi
 		if request.method == "GET" then
 			var in_id = request.param("id")
 			var out_id = deserialize_arg(in_id, "Int")
@@ -179,8 +177,16 @@ class EquipmentRestController
 	end
 end
 
-class TransportShipRestController
+abstract class ShipRestController
 	super EquipmentRestController
+
+	init do converter = new ShipConverter(repository)
+end
+
+class TransportShipRestController
+	super ShipRestController
+
+	init do validator = new TransportShipValidator(repository)
 
 	redef private var static_type = "TransportShip"
 
@@ -195,8 +201,8 @@ class TransportShipRestController
 
 			data_binder.validate
 
-			if data_binder.get_results.not_empty then
-				return new HttpResponse.bad_request(data_binder.get_results.to_s)
+			if data_binder.errors.not_empty then
+				return new HttpResponse.bad_request(data_binder.errors.to_s)
 			end
 
 			transport_ship_dto = transport_ship_dto.as(TransportShipDTO)
@@ -224,9 +230,11 @@ class TransportShipRestController
 end
 
 class HeavyWarShipRestController
-	super EquipmentRestController
+	super ShipRestController
 
 	redef private var static_type = "HeavyWarShip"
+
+	init do validator = new HeavyWarShipValidator(repository)
 
 	redef fun answer(request, turi)
 	do
@@ -239,8 +247,8 @@ class HeavyWarShipRestController
 
 			data_binder.validate
 
-			if data_binder.get_results.not_empty then
-				return new HttpResponse.bad_request(data_binder.get_results.to_s)
+			if data_binder.errors.not_empty then
+				return new HttpResponse.bad_request(data_binder.errors.to_s)
 			end
 
 			if request.method == "POST" and out_id == null then
@@ -264,8 +272,12 @@ class HeavyWarShipRestController
 end
 
 class LightWarShipRestController
-	super EquipmentRestController
+	super ShipRestController
+
 	redef private var static_type = "LightWarShip"
+
+	init do validator = new LightWarShipValidator(repository)
+
 	redef fun answer(request, turi)
 	do
 		var in_id = request.param("id")
@@ -277,8 +289,8 @@ class LightWarShipRestController
 
 			data_binder.validate
 
-			if data_binder.get_results.not_empty then
-				return new HttpResponse.bad_request(data_binder.get_results.to_s)
+			if data_binder.errors.not_empty then
+				return new HttpResponse.bad_request(data_binder.errors.to_s)
 			end
 
 			if request.method == "POST" and out_id == null then
@@ -302,8 +314,12 @@ class LightWarShipRestController
 end
 
 class HybridShipRestController
-	super EquipmentRestController
+	super ShipRestController
+
 	redef private var static_type = "HybridShip"
+
+	init do validator = new HybridShipValidator(repository)
+
 	redef fun answer(request, turi)
 	do
 		var in_id = request.param("id")
@@ -315,8 +331,8 @@ class HybridShipRestController
 
 			data_binder.validate
 
-			if data_binder.get_results.not_empty then
-				return new HttpResponse.bad_request(data_binder.get_results.to_s)
+			if data_binder.errors.not_empty then
+				return new HttpResponse.bad_request(data_binder.errors.to_s)
 			end
 
 			if request.method == "POST" and out_id == null then
@@ -339,9 +355,19 @@ class HybridShipRestController
 	end
 end
 
-class PhaserRestController
+abstract class WeaponRestController
 	super EquipmentRestController
+
+	init do converter = new WeaponConverter
+end
+
+class PhaserRestController
+	super WeaponRestController
+
 	redef private var static_type = "Phaser"
+
+	init do validator = new WeaponValidator
+
 	redef fun answer(request, turi)
 	do
 		var in_id = request.param("id")
@@ -354,8 +380,8 @@ class PhaserRestController
 
 			data_binder.validate
 
-			if data_binder.get_results.not_empty then
-				return new HttpResponse.bad_request(data_binder.get_results.to_s)
+			if data_binder.errors.not_empty then
+				return new HttpResponse.bad_request(data_binder.errors.to_s)
 			end
 
 			var phaser = converter.create_from_dto(phaser_dto.as(PhaserDTO))
@@ -371,7 +397,15 @@ end
 
 class ContainerRestController
 	super EquipmentRestController
+
 	redef private var static_type = "Container"
+
+	init
+	do
+		validator = new ContainerValidator
+		converter = new ContainerConverter
+	end
+
 	redef fun answer(request, turi)
 	do
 		var in_id = request.param("id")
@@ -384,8 +418,8 @@ class ContainerRestController
 
 			data_binder.validate
 
-			if data_binder.get_results.not_empty then
-				return new HttpResponse.bad_request(data_binder.get_results.to_s)
+			if data_binder.errors.not_empty then
+				return new HttpResponse.bad_request(data_binder.errors.to_s)
 			end
 
 			var container = converter.create_from_dto(container_dto.as(ContainerDTO))
@@ -400,8 +434,12 @@ class ContainerRestController
 end
 
 class BlasterRestController
-	super EquipmentRestController
+	super WeaponRestController
+
 	redef private var static_type = "Blaster"
+
+	init do validator = new WeaponValidator
+
 	redef fun answer(request, turi)
 	do
 		var in_id = request.param("id")
@@ -414,8 +452,8 @@ class BlasterRestController
 
 			data_binder.validate
 
-			if data_binder.get_results.not_empty then
-				return new HttpResponse.bad_request(data_binder.get_results.to_s)
+			if data_binder.errors.not_empty then
+				return new HttpResponse.bad_request(data_binder.errors.to_s)
 			end
 
 			var blaster = converter.create_from_dto(blaster_dto.as(BlasterDTO))
